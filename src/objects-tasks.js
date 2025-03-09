@@ -150,8 +150,17 @@ function makeWord(lettersObject) {
  *    sellTickets([25, 25, 50]) => true
  *    sellTickets([25, 100]) => false (The seller does not have enough money to give change.)
  */
-function sellTickets(/* queue */) {
-  throw new Error('Not implemented');
+function sellTickets(queue) {
+  let bank = 0;
+  const price = 25;
+  for (let i = 0; i < queue.length; i += 1) {
+    if (queue[i] === price) {
+      bank += queue[i];
+    } else if (queue[i] - bank > price) {
+      return false;
+    }
+  }
+  return true;
 }
 
 /**
@@ -167,8 +176,14 @@ function sellTickets(/* queue */) {
  *    console.log(r.height);      // => 20
  *    console.log(r.getArea());   // => 200
  */
-function Rectangle(/* width, height */) {
-  throw new Error('Not implemented');
+function Rectangle(width, height) {
+  return {
+    height,
+    width,
+    getArea() {
+      return this.width * this.height;
+    },
+  };
 }
 
 /**
@@ -196,8 +211,11 @@ function getJSON(obj) {
  *    const r = fromJSON(Circle.prototype, '{"radius":10}');
  *
  */
-function fromJSON(/* proto, json */) {
-  throw new Error('Not implemented');
+function fromJSON(proto, json) {
+  const parsed = JSON.parse(json);
+  const newObj = Object.create(proto);
+  Object.assign(newObj, parsed);
+  return newObj;
 }
 
 /**
@@ -226,8 +244,13 @@ function fromJSON(/* proto, json */) {
  *      { country: 'Russia',  city: 'Saint Petersburg' }
  *    ]
  */
-function sortCitiesArray(/* arr */) {
-  throw new Error('Not implemented');
+function sortCitiesArray(arr) {
+  return arr.sort((a, b) => {
+    if (a.country === b.country) {
+      return a.city.localeCompare(b.city);
+    }
+    return a.country.localeCompare(b.country);
+  });
 }
 
 /**
@@ -260,8 +283,18 @@ function sortCitiesArray(/* arr */) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  const multimap = new Map();
+  array.forEach((item) => {
+    const key = keySelector(item);
+    const value = valueSelector(item);
+    if (multimap.has(key)) {
+      multimap.get(key).push(value);
+    } else {
+      multimap.set(key, [value]);
+    }
+  });
+  return multimap;
 }
 
 /**
